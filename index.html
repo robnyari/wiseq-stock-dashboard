@@ -56,7 +56,7 @@
 <body>
 <header>
   <h1>WiseQ voorraadmonitor</h1>
-  <div class="sub">2026-11-24 &middot; status PARTIAL &middot; 246 producten &middot; bron: het planwerkboek, ChannelDock en bol.com</div>
+  <div class="sub">2026-11-24 &middot; status PARTIAL &middot; 246 producten &middot; bron: het planwerkboek</div>
 </header>
 <main>
   <div class="tiles" id="tiles"></div>
@@ -106,7 +106,7 @@ function renderTiles() {
     {label: 'Orderwaarde', value: eur(S.order_value_eur), hint: 'voorstel, wacht op goedkeuring', safe: false},
     {label: 'Onvolledig', value: num(S.incomplete_rows), hint: 'regels met ontbrekende data', cls: S.incomplete_rows ? 'warn' : 'good', safe: true},
     {label: 'Reconciliatie', value: agreement === null ? '-' : pct(agreement),
-     hint: rec.agrees + ' gelijk, ' + rec.disagrees + ' verschillend, ' + rec.bundle_definition + ' bundel', safe: true},
+     hint: rec.agrees + ' gelijk, ' + rec.disagrees + ' verschillend, ' + rec.bundle_definition + ' bundel', safe: false},
     {label: 'Zonder leverancier', value: pct(S.products ? S.missing_supplier / S.products : null), hint: 'het Step 1 gat', cls: S.missing_supplier ? 'bad' : 'good', safe: false},
     {label: 'Zonder inkoopprijs', value: pct(S.products ? S.missing_price / S.products : null), hint: 'het Step 1 gat', cls: S.missing_price ? 'bad' : 'good', safe: false}
   ];
