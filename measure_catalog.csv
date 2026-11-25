@@ -1,0 +1,13 @@
+name,dax,format,description,note
+Physical Stock Units,"CALCULATE(SUM('fact stock position'[stock_units]), 'fact stock position'[stock_derived] = FALSE())","#,0",Stock that is physically on the shelf.,Derived bundle stock is excluded: the parts are already counted.
+Derived Bundle Units,"CALCULATE(SUM('fact stock position'[stock_units]), 'fact stock position'[stock_derived] = TRUE())","#,0",Bundles that could be built from the parts in stock.,"Never add to Physical Stock Units: it is the same stock, seen twice."
+Products At Risk,"CALCULATE(COUNTROWS('fact stock position'), 'fact stock position'[risk] IN {""critical"", ""warning""})","#,0",Products under the days-of-stock threshold.,Risk comes from the live forecast; unknown is never counted as risk.
+Units To Order,SUM('fact stock position'[to_order_units]),"#,0",Units the engine proposes to reorder.,"A proposal, not an order. A human approves every line."
+Order Value EUR,SUM('fact stock position'[order_value_eur]),"€ #,0.00",What the proposed reorder is worth.,Blank where the purchase price is unknown.
+Stock Value EUR,"SUMX('fact stock position', [stock_units] * RELATED('dim product'[unit_cost_eur]))","€ #,0.00",The value of the stock on the shelf.,Needs a purchase price per article; see the master template.
+Average Cover Months,AVERAGE('fact stock position'[cover_months]),0.0,Average months of cover across the assortment.,Blank rows (unknown demand) are excluded by AVERAGE.
+Data Completeness %,"DIVIDE(CALCULATE(COUNTROWS('fact stock position'), 'fact stock position'[completeness] = ""complete""), COUNTROWS('fact stock position'))",0.0%,How much of the assortment the run could actually measure.,
+Reconciliation Agreement %,"DIVIDE(CALCULATE(COUNTROWS('fact reconciliation'), 'fact reconciliation'[verdict] = ""agrees""), COUNTROWS('fact reconciliation'))",0.0%,How often the typed figure equals the live figure.,Bundle rows have their own verdict: they are not comparable.
+Missing Supplier %,"DIVIDE(CALCULATE(COUNTROWS('dim product'), 'dim product'[missing_supplier] = TRUE()), COUNTROWS('dim product'))",0.0%,Share of products without a supplier - the Step 1 gap.,
+Missing Purchase Price %,"DIVIDE(CALCULATE(COUNTROWS('dim product'), 'dim product'[missing_price] = TRUE()), COUNTROWS('dim product'))",0.0%,Share of products without a purchase price.,
+Bundles,"CALCULATE(COUNTROWS('dim product'), 'dim product'[is_bundle] = TRUE())","#,0",How many bundle articles the assortment holds.,
